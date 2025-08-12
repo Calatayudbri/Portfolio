@@ -409,12 +409,14 @@
             background-position: center;
             background-repeat: no-repeat;
         }
+
         .project-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
+
         .project-image::before {
             content: '';
             position: absolute;
@@ -700,7 +702,6 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#skills">Skills</a></li>
-                <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -714,7 +715,6 @@
                 with cutting-edge technology and innovative gameplay mechanics.</p>
             <div class="cta-buttons">
                 <a href="#projects" class="cta-button">View My Work</a>
-                <a href="#contact" class="cta-button secondary">Get In Touch</a>
             </div>
         </div>
     </section>
@@ -725,18 +725,20 @@
         <div class="projects-grid">
             <div class="project-card">
                 <div class="project-image">
-                    <img src="Images/CrowNest.png" alt ="Inside the Crow's Nest">
+                    <img src="Images/CrowNest.png" alt="Inside the Crow's Nest">
                 </div>
                 <div class="project-content">
                     <h3 class="project-title">Inside the Crow's Nest</h3>
-                    <p class="project-description">Inside the Crow's Nest is a game inspired by classic survival horror</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Unreal Engine 5.4</span>
-                            <span class="tech-tag">C++</span>
-                            <span class="tech-tag">Blueprints</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://store.steampowered.com/app/3719120/Inside_the_Crows_Nest/" target="_blank" class="project-link">Steam</a>
+                    <p class="project-description">Inside the Crow's Nest is a game inspired by classic survival horror
+                    </p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Unreal Engine 5.4</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Blueprints</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://store.steampowered.com/app/3719120/Inside_the_Crows_Nest/" target="_blank"
+                            class="project-link">Steam</a>
                     </div>
                 </div>
             </div>
@@ -745,7 +747,8 @@
                 <div class="project-image"><img src="Images/LUQUI.png"></div>
                 <div class="project-content">
                     <h3 class="project-title">LUQUI Engine</h3>
-                    <p class="project-description">Custom graphics engine built from scratch using OpenGL and modern C++.</p>
+                    <p class="project-description">Custom graphics engine built from scratch using OpenGL and modern
+                        C++.</p>
                     <div class="project-tech">
                         <span class="tech-tag">C++</span>
                         <span class="tech-tag">OpenGL</span>
@@ -753,29 +756,51 @@
                         <span class="tech-tag">ImGui</span>
                     </div>
                     <div class="project-links">
-                        <a href="https://youtu.be/4MoQW20fAek?si=Bnj_LmkLgIWMb6dS" target="_blank" class="project-link">Watch video demo</a>
+                        <a href="https://youtu.be/4MoQW20fAek?si=Bnj_LmkLgIWMb6dS" target="_blank"
+                            class="project-link">Watch video demo</a>
                         <!-- <a href="#" class="project-link">Documentation</a> -->
                     </div>
                 </div>
             </div>
 
+
             <div class="project-card">
-                <div class="project-image"><img src="Images/CrowNest.png"></div>
+                <div class="project-image"><img src="Images/Loopus.png"></div>
                 <div class="project-content">
-                    <h3 class="project-title">Input Game</h3>
-                    <p class="project-description">Restricted input</p>
+                    <h3 class="project-title">Loopus Loopez Paella Defender</h3>
+                    <p class="project-description">Game made as a submission for the GMTK 2025 Jam</p>
                     <div class="project-tech">
-                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Unreal Engine 5.4</span>
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">Blueprints</span>
                     </div>
                     <div class="project-links">
-                        <a href="https://youtu.be/4MoQW20fAek?si=Bnj_LmkLgIWMb6dS" target="_blank" class="project-link">Watch video
-                            demo</a>
-                        <a href="#" class="project-link">Documentation</a>
+                        <a href="https://b00le4n.itch.io/loopusloopez" target="_blank" class="project-link">itch.io game
+                            page</a>
+
                     </div>
                 </div>
             </div>
-    
-        
+
+            <div class="project-card">
+                <div class="project-image"><img src="Images/Space_trip.png"></div>
+                <div class="project-content">
+                    <h3 class="project-title">Input Game</h3>
+                    <p class="project-description">Restricted input academic project where a controller is needed to
+                        play</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">C#</span>
+                        <span class="tech-tag">Unity</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="Files/Space-Trip.zip" download="Space-Trip.zip"
+                            class="cta-button secondary">Download Demo</a>
+
+                    </div>
+                </div>
+            </div>
+
+
     </section>
 
     <!-- Skills Section -->
@@ -818,39 +843,6 @@
                     <li>System Design</li>
                 </ul>
             </div> -->
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="section" id="contact">
-        <h2 class="section-title">Let's Work Together</h2>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>Ready to Create Something Amazing?</h3>
-                <p>I'm passionate about developing innovative gaming experiences and always excited to collaborate on
-                    new projects. Whether you need a skilled developer for your team or want to discuss a creative idea,
-                    I'd love to hear from you.</p>
-                <p>Let's build the next generation of games together!</p>
-            </div>
-            <form class="contact-form" action="mailto:your.email@example.com" method="post" enctype="text/plain">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="6" required></textarea>
-                </div>
-                <button type="submit" class="cta-button">Send Message</button>
-            </form>
         </div>
     </section>
 
