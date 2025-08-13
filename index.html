@@ -396,7 +396,7 @@
         }
 
         .project-image {
-            height: 50%;
+            height: 250px;
             background: linear-gradient(135deg, var(--dark-secondary), var(--dark-tertiary));
             display: flex;
             align-items: center;
@@ -410,11 +410,29 @@
             background-repeat: no-repeat;
         }
 
-        .project-image img {
+        /* Estilos mejorados para las imágenes con transición de GIF */
+        .project-image .static-image,
+        .project-image .gif-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .project-image .gif-image {
+            opacity: 0;
+            z-index: 2;
+        }
+
+        .project-card:hover .project-image .static-image {
+            opacity: 0;
+        }
+
+        .project-card:hover .project-image .gif-image {
+            opacity: 1;
         }
 
         .project-image::before {
@@ -427,6 +445,7 @@
             background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 136, 0.1) 50%, transparent 70%);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
+            z-index: 3;
         }
 
         .project-card:hover .project-image::before {
@@ -725,7 +744,8 @@
         <div class="projects-grid">
             <div class="project-card">
                 <div class="project-image">
-                    <img src="Images/CrowNest.png" alt="Inside the Crow's Nest">
+                    <img src="Images/CrowNest.png" alt="Inside the Crow's Nest" class="static-image">
+                    <img src="Images/Gifs/Inside the crow's nest.gif" alt="Inside the Crow's Nest Gameplay" class="gif-image">
                 </div>
                 <div class="project-content">
                     <h3 class="project-title">Inside the Crow's Nest</h3>
@@ -744,7 +764,10 @@
             </div>
 
             <div class="project-card">
-                <div class="project-image"><img src="Images/LUQUI.png"></div>
+                <div class="project-image">
+                    <img src="Images/LUQUI.png" alt="LUQUI Engine" class="static-image">
+                    <img src="Images/Gifs/LUQUI ENGINE.gif" alt="LUQUI Engine Demo" class="gif-image">
+                </div>
                 <div class="project-content">
                     <h3 class="project-title">LUQUI Engine</h3>
                     <p class="project-description">Custom graphics engine built from scratch using OpenGL and modern
@@ -758,14 +781,15 @@
                     <div class="project-links">
                         <a href="https://youtu.be/4MoQW20fAek?si=Bnj_LmkLgIWMb6dS" target="_blank"
                             class="project-link">Watch video demo</a>
-                        <!-- <a href="#" class="project-link">Documentation</a> -->
                     </div>
                 </div>
             </div>
 
-
             <div class="project-card">
-                <div class="project-image"><img src="Images/Loopus.png"></div>
+                <div class="project-image">
+                    <img src="Images/Loopus.png" alt="Loopus Loopez" class="static-image">
+                    <img src="Images/Gifs/LL_Gameplay_gif.gif" alt="Loopus Loopez Gameplay" class="gif-image">
+                </div>
                 <div class="project-content">
                     <h3 class="project-title">Loopus Loopez Paella Defender</h3>
                     <p class="project-description">Game made as a submission for the GMTK 2025 Jam</p>
@@ -777,13 +801,15 @@
                     <div class="project-links">
                         <a href="https://b00le4n.itch.io/loopusloopez" target="_blank" class="project-link">itch.io game
                             page</a>
-
                     </div>
                 </div>
             </div>
 
             <div class="project-card">
-                <div class="project-image"><img src="Images/Space_trip.png"></div>
+                <div class="project-image">
+                    <img src="Images/Space_trip.png" alt="Input Game" class="static-image">
+                    <img src="Images/Gifs/Space_trip.gif" alt="Input Game Gameplay" class="gif-image">
+                </div>
                 <div class="project-content">
                     <h3 class="project-title">Input Game</h3>
                     <p class="project-description">Restricted input academic project where a controller is needed to
@@ -795,12 +821,10 @@
                     <div class="project-links">
                         <a href="Files/Space-Trip.zip" download="Space-Trip.zip"
                             class="cta-button secondary">Download Demo</a>
-
                     </div>
                 </div>
             </div>
-
-
+        </div>
     </section>
 
     <!-- Skills Section -->
@@ -810,7 +834,7 @@
             <div class="skill-category">
                 <h3>Game Engines</h3>
                 <ul class="skill-list">
-                    <li>Unity 3D</li>
+                    <li>Unity</li>
                     <li>Unreal Engine 5</li>
                     <li>Blueprint Visual Scripting</li>
                     <li>Unreal Metasounds</li>
@@ -834,15 +858,6 @@
                     <li>Perforce</li>
                 </ul>
             </div>
-            <!-- <div class="skill-category">
-                <h3>Specializations</h3>
-                <ul class="skill-list">
-                    <li>Game Architecture</li>
-                    <li>Performance Optimization</li>
-                    <li>AI Programming</li>
-                    <li>System Design</li>
-                </ul>
-            </div> -->
         </div>
     </section>
 
@@ -894,38 +909,23 @@
             });
         });
 
-        // Enhanced form submission with email client
-        document.querySelector('.contact-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const subject = document.getElementById('subject').value;
-            const message = document.getElementById('message').value;
-
-            // Create email body
-            const emailBody = `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`;
-
-            // Create mailto link
-            const mailtoLink = `mailto:calatayudbri@esat-alumni.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-
-            // Open email client
-            window.location.href = mailtoLink;
-
-            // Show success message
-            alert('Opening your email client... Please send the email to complete your message.');
-
-            // Reset form
-            this.reset();
-        });
-
         // Initialize particles
         createParticles();
 
-        // Enhanced project card interactions
+        // Enhanced project card interactions with preloading
         document.querySelectorAll('.project-card').forEach(card => {
+            // Preload GIF when hovering near the card
+            const gifImage = card.querySelector('.gif-image');
+            
             card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-15px) scale(1.02)';
+                // Ensure GIF starts playing on hover
+                if (gifImage && gifImage.src.includes('.gif')) {
+                    // Force GIF to restart by resetting src
+                    const originalSrc = gifImage.src;
+                    gifImage.src = '';
+                    gifImage.src = originalSrc;
+                }
             });
 
             card.addEventListener('mouseleave', function () {
@@ -1004,8 +1004,12 @@
             const subtitle = document.querySelector('.hero-subtitle');
             const originalText = subtitle.textContent;
             typeWriter(subtitle, originalText, 80);
+            
+            // Preload all GIF images for better performance
+            document.querySelectorAll('.gif-image').forEach(img => {
+                if (img.src.includes('.gif')) {
+                    const preloadImg = new Image();
+                    preloadImg.src = img.src;
+                }
+            });
         });
-    </script>
-</body>
-
-</html>
