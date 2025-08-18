@@ -709,11 +709,9 @@
 </head>
 
 <body>
-    <!-- Enhanced Animated Background -->
     <div class="particles" id="particles"></div>
     <div class="grid-overlay"></div>
 
-    <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">LUCAS CALATAYUD</a>
@@ -725,7 +723,6 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>LUCAS CALATAYUD</h1>
@@ -739,7 +736,6 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section class="section" id="projects">
         <h2 class="section-title">Featured Projects</h2>
         <div class="projects-grid">
@@ -828,7 +824,6 @@
         </div>
     </section>
 
-    <!-- Skills Section -->
     <section class="section" id="skills">
         <h2 class="section-title">Technical Skills</h2>
         <div class="skills-container">
@@ -862,13 +857,11 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2025 Lucas Calatayud. Game Developer & Programmer</p>
     </footer>
 
     <script>
-        // Enhanced particle system
         function createParticles() {
             const particlesContainer = document.getElementById('particles');
             const particleCount = 80;
@@ -885,7 +878,6 @@
             }
         }
 
-        // Enhanced navbar scroll effect
         window.addEventListener('scroll', function () {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 100) {
@@ -895,7 +887,6 @@
             }
         });
 
-        // Smooth scrolling with offset for fixed navbar
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -910,19 +901,14 @@
             });
         });
 
-        // Initialize particles
         createParticles();
 
-        // Enhanced project card interactions with preloading
         document.querySelectorAll('.project-card').forEach(card => {
-            // Preload GIF when hovering near the card
             const gifImage = card.querySelector('.gif-image');
             
             card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-15px) scale(1.02)';
-                // Ensure GIF starts playing on hover
                 if (gifImage && gifImage.src.includes('.gif')) {
-                    // Force GIF to restart by resetting src
                     const originalSrc = gifImage.src;
                     gifImage.src = '';
                     gifImage.src = originalSrc;
@@ -934,7 +920,6 @@
             });
         });
 
-        // Intersection Observer for scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -948,12 +933,10 @@
             });
         }, observerOptions);
 
-        // Observe all sections for animation
         document.querySelectorAll('.section').forEach(section => {
             observer.observe(section);
         });
 
-        // Add parallax effect to hero section
         window.addEventListener('scroll', function () {
             const scrolled = window.pageYOffset;
             const hero = document.querySelector('.hero');
@@ -961,13 +944,11 @@
             hero.style.transform = `translateY(${rate}px)`;
         });
 
-        // Mobile menu toggle (for future implementation)
         function toggleMobileMenu() {
             const navLinks = document.querySelector('.nav-links');
             navLinks.classList.toggle('mobile-active');
         }
 
-        // Add smooth reveal animation to elements
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.project-card, .skill-category');
 
@@ -984,7 +965,6 @@
 
         window.addEventListener('scroll', revealOnScroll);
 
-        // Typewriter effect for hero subtitle (optional enhancement)
         function typeWriter(element, text, speed = 100) {
             let i = 0;
             element.innerHTML = '';
@@ -1000,13 +980,13 @@
             type();
         }
 
-        // Initialize typewriter effect after page load
+       
         window.addEventListener('load', function () {
             const subtitle = document.querySelector('.hero-subtitle');
             const originalText = subtitle.textContent;
             typeWriter(subtitle, originalText, 80);
             
-            // Preload all GIF images for better performance
+           
             document.querySelectorAll('.gif-image').forEach(img => {
                 if (img.src.includes('.gif')) {
                     const preloadImg = new Image();
