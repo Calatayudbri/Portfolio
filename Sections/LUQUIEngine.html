@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUQUI Engine - Lucas Calatayud</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-cyan: #00D9FF;
+            --dark-cyan: #0099CC;
+            --accent-green: #00FF88;
+            --engine-black: #0D1117;
+            --deep-black: #000000;
+            --dark-gray: #161B22;
+            --medium-gray: #21262D;
+            --glass-bg: rgba(0, 217, 255, 0.1);
+            --glass-border: rgba(0, 217, 255, 0.2);
+            --code-gray: #30363D;
+        }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: radial-gradient(ellipse at center, var(--dark-gray) 0%, var(--engine-black) 70%, var(--deep-black) 100%);
+            color: #E6EDF3;
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Enhanced animated background with circuit-like particles */
+        .circuits {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .circuit {
+            position: absolute;
+            border-radius: 2px;
+            animation: float 15s infinite linear;
+            transform-origin: center;
+        }
+
+        .circuit.small {
+            width: 4px;
+            height: 4px;
+            background: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
+        }
+
+        .circuit.medium {
+            width: 6px;
+            height: 6px;
+            background: var(--primary-cyan);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+
+        .circuit.large {
+            width: 8px;
+            height: 8px;
+            background: var(--dark-cyan);
+            box-shadow: 0 0 10px var(--dark-cyan);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg) translateX(0px);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: translateY(50vh) rotate(90deg) translateX(30px);
+                opacity: 0.6;
+            }
+
+            90% {
+                opacity: 0.4;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(180deg) translateX(-30px);
+                opacity: 0;
+            }
+        }
+
+        /* Tech grid overlay */
+        .tech-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 217, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 25% 25%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(0, 217, 255, 0.05) 0%, transparent 50%);
+            background-size: 60px 60px, 60px 60px, 200px 200px, 200px 200px;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Enhanced Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        nav.scrolled {
+            background: rgba(13, 17, 23, 0.98);
+            box-shadow: 0 5px 30px rgba(0, 217, 255, 0.3);
+            border-bottom-color: rgba(0, 217, 255, 0.4);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-cyan);
+            text-decoration: none;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: #E6EDF3;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+            text-shadow: 0 0 10px rgba(0, 217, 255, 0.6);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--accent-green));
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Enhanced Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 60%);
+            animation: techPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes techPulse {
+
+            0%,
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.2;
+            }
+
+            25% {
+                transform: scale(1.1) rotate(90deg);
+                opacity: 0.1;
+            }
+
+            50% {
+                transform: scale(0.9) rotate(180deg);
+                opacity: 0.3;
+            }
+
+            75% {
+                transform: scale(1.05) rotate(270deg);
+                opacity: 0.15;
+            }
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #E6EDF3, var(--primary-cyan), var(--accent-green));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: techShift 6s ease-in-out infinite;
+            text-shadow: 0 0 50px rgba(0, 217, 255, 0.3);
+        }
+
+        @keyframes techShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: var(--accent-green);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        /* Enhanced Sections */
+        .section {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--primary-cyan);
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--dark-cyan), var(--primary-cyan), var(--accent-green));
+            border-radius: 2px;
+        }
+
+        .section-intro {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .content-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--dark-cyan), var(--primary-cyan));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        .content-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .content-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 217, 255, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .card-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-cyan);
+        }
+
+        .card-content {
+            opacity: 0.9;
+            line-height: 1.8;
+        }
+
+        .card-content ul {
+            margin-left: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .card-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-highlight {
+            background: rgba(0, 217, 255, 0.15);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--primary-cyan);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--code-gray);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--glass-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: attr(data-language);
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            color: var(--accent-green);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Media Content */
+        .media-container {
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .media-item {
+            background: var(--glass-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .media-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 217, 255, 0.2);
+        }
+
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .media-caption {
+            padding: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        /* Two-column layout for text + media */
+        .content-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin: 4rem 0;
+        }
+
+        .content-two-column .text-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .content-two-column .media-content {
+            background: var(--glass-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Process Steps */
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            background: var(--glass-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            transform: translateX(10px);
+            border-color: var(--primary-cyan);
+        }
+
+        .step-number {
+            background: var(--primary-cyan);
+            color: var(--deep-black);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: 'Orbitron', monospace;
+            margin-right: 2rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: var(--primary-cyan);
+            margin-bottom: 0.5rem;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .comparison-card {
+            background: var(--glass-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-card.forward {
+            border-color: rgba(255, 165, 0, 0.3);
+        }
+
+        .comparison-card.deferred {
+            border-color: rgba(0, 217, 255, 0.3);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 217, 255, 0.1);
+        }
+
+        .comparison-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .comparison-card.forward .comparison-title {
+            color: #FFA500;
+        }
+
+        .comparison-card.deferred .comparison-title {
+            color: var(--primary-cyan);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .content-two-column {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 5rem 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Loading animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(13, 17, 23, 0.95);
+            text-align: center;
+            padding: 3rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="circuits" id="circuits"></div>
+    <div class="tech-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Back to Portfolio</a>
+            <ul class="nav-links">
+                <li><a href="#models">Model Loading</a></li>
+                <li><a href="#rendering">Rendering Pipeline</a></li>
+                <li><a href="#lighting">Lighting & Shadows</a></li>
+                <li><a href="#skybox">Skybox System</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>LUQUI ENGINE</h1>
+            <p class="hero-subtitle">Custom OpenGL Graphics Engine</p>
+            <p class="hero-description">
+                A modern 3D graphics engine built from scratch using OpenGL, C++, and modern rendering techniques.
+                Features include asynchronous model loading, deferred rendering pipeline, dynamic lighting with shadow
+                mapping, and comprehensive material systems.
+            </p>
+        </div>
+    </section>
+
+    <!-- Model Loading Section -->
+    <section class="section" id="models">
+        <h2 class="section-title">Model Loading System</h2>
+        <p class="section-intro">
+            Advanced 3D model loading system with asynchronous processing, multi-threading support, and efficient memory
+            management. Supports various formats through Assimp integration and features smart caching mechanisms.
+        </p>
+
+        <div class="content-two-column">
+            <div class="text-content">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem;">Asynchronous Loading Architecture</h3>
+                <p>The model loading system utilizes a custom <span class="tech-highlight">JobSystem</span> for
+                    asynchronous processing, preventing main thread blocking during heavy I/O operations.</p>
+
+                <p>Models are loaded in two phases: data processing on worker threads and OpenGL resource creation on
+                    the main thread, ensuring thread safety while maximizing performance.</p>
+            </div>
+            <div class="media-content">
+                <div class="code-block" data-language="C++">
+                    Model::Model(const std::string& path, JobSystem& jobSystem) : asyncMode(true) {
+                    loadModelDataAsync(path, jobSystem);
+                    }
+
+                    void Model::loadModelDataAsync(const std::string& path, JobSystem& jobSystem) {
+                    jobSystem.addJob(JobSystem::JobType::General,
+                    JobSystem::JobPriority::High,
+                    [this, path]() {
+                    // Process model data on worker thread
+                    Assimp::Importer importer;
+                    const aiScene* scene = importer.ReadFile(path,
+                    aiProcess_Triangulate | aiProcess_FlipUVs);
+
+                    processNode(scene->mRootNode, scene);
+                    dataLoaded = true;
+                    });
+                    }</div>
+            </div>
+        </div>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>File Processing</h4>
+                    <p>Models are loaded using <span class="tech-highlight">Assimp</span> library with optimized flags
+                        for triangulation and UV coordinate processing.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Mesh Data Extraction</h4>
+                    <p>Vertex data, indices, and material information are extracted and stored in intermediate
+                        structures for later OpenGL buffer creation.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Texture Management</h4>
+                    <p>Smart texture caching system prevents duplicate loading of textures, optimizing memory usage
+                        across multiple models.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4>OpenGL Resource Creation</h4>
+                    <p>VAOs, VBOs, and textures are created on the main thread once data processing is complete,
+                        ensuring thread safety.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h3 class="card-title">Mesh Structure</h3>
+                <div class="card-content">
+                    <p>Each mesh contains optimized vertex data:</p>
+                    <ul>
+                        <li><strong>Position:</strong> 3D world coordinates</li>
+                        <li><strong>Normal:</strong> Surface normal vectors</li>
+                        <li><strong>Texture Coordinates:</strong> UV mapping</li>
+                        <li><strong>Material Data:</strong> Diffuse, specular, normal maps</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="card-title">Memory Optimization</h3>
+                <div class="card-content">
+                    <p>Smart memory management features:</p>
+                    <ul>
+                        <li>RAII-based resource management</li>
+                        <li>Move semantics for efficient transfers</li>
+                        <li>Automatic cleanup on destruction</li>
+                        <li>Shared texture resource pooling</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rendering Pipeline Section -->
+    <section class="section" id="rendering">
+        <h2 class="section-title">Rendering Pipeline</h2>
+        <p class="section-intro">
+            Flexible rendering architecture supporting both forward and deferred rendering pipelines. The deferred
+            renderer optimizes performance for scenes with multiple lights while maintaining visual quality.
+        </p>
+
+        <div class="comparison-grid">
+            <div class="comparison-card forward">
+                <h3 class="comparison-title">Forward Rendering</h3>
+                <div class="card-content">
+                    <p><strong>Advantages:</strong></p>
+                    <ul>
+                        <li>Simple implementation</li>
+                        <li>Transparent object support</li>
+                        <li>Lower memory usage</li>
+                        <li>MSAA compatibility</li>
+                    </ul>
+                    <p><strong>Best for:</strong> Scenes with few lights, mobile rendering</p>
+                </div>
+            </div>
+            <div class="comparison-card deferred">
+                <h3 class="comparison-title">Deferred Rendering</h3>
+                <div class="card-content">
+                    <p><strong>Advantages:</strong></p>
+                    <ul>
+                        <li>Constant lighting cost</li>
+                        <li>Many lights support</li>
+                        <li>Decoupled geometry/lighting</li>
+                        <li>Advanced effects ready</li>
+                    </ul>
+                    <p><strong>Best for:</strong> Complex scenes with many dynamic lights</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-two-column">
+            <div class="media-content">
+                <div class="code-block" data-language="C++">
+                    class DeferredRenderer {
+                    private:
+                    GLuint gBuffer; // G-Buffer framebuffer
+                    GLuint gPosition; // Position texture
+                    GLuint gNormal; // Normal texture
+                    GLuint gAlbedoSpec; // Albedo + Specular
+                    GLuint rboDepth; // Depth renderbuffer
+
+                    public:
+                    void GeometryPass(ECSManager& ecsManager,
+                    Program& gBufferProgram);
+                    void LightingPass(ECSManager& ecsManager,
+                    Program& lightProgram);
+                    void FinalPass(Program& finalProgram);
+                    };</div>
+            </div>
+            <div class="text-content">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem;">G-Buffer Architecture</h3>
+                <p>The deferred renderer uses a multi-target framebuffer (G-Buffer) to store geometry information:</p>
+
+                <p><strong>Position Buffer (RGBA16F):</strong> World-space positions with depth</p>
+                <p><strong>Normal Buffer (RGBA16F):</strong> World-space normals</p>
+                <p><strong>Albedo-Spec Buffer (RGBA16F):</strong> Diffuse color and specular intensity</p>
+            </div>
+        </div>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Geometry Pass</h4>
+                    <p>All opaque objects are rendered to the G-Buffer, storing position, normal, and material data for
+                        later use.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Lighting Pass</h4>
+                    <p>Screen-space lighting calculations are performed using G-Buffer data with additive blending for
+                        multiple lights.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Final Pass</h4>
+                    <p>Results are composed and tone-mapped to the screen, with optional post-processing effects
+                        applied.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lighting & Shadows Section -->
+    <section class="section" id="lighting">
+        <h2 class="section-title">Lighting & Shadow System</h2>
+        <p class="section-intro">
+            Comprehensive lighting system supporting multiple light types with advanced shadow mapping techniques.
+            Features directional, point, and spot lights with cascaded and cube shadow maps.
+        </p>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h3 class="card-title">Directional Lights</h3>
+                <div class="card-content">
+                    <ul>
+                        <li>Orthographic shadow projection</li>
+                        <li>Camera-frustum aligned shadows</li>
+                        <li>Infinite light sources (sun/moon)</li>
+                        <li>Efficient for outdoor scenes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="card-title">Point Lights</h3>
+                <div class="card-content">
+                    <ul>
+                        <li>Omnidirectional shadow casting</li>
+                        <li>Cube shadow maps (6 faces)</li>
+                        <li>Distance-based attenuation</li>
+                        <li>Perfect for indoor lighting</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="card-title">Spot Lights</h3>
+                <div class="card-content">
+                    <ul>
+                        <li>Perspective shadow projection</li>
+                        <li>Configurable cone angles</li>
+                        <li>Smooth falloff at edges</li>
+                        <li>Great for focused lighting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-two-column">
+            <div class="text-content">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem;">Shadow Mapping Implementation</h3>
+                <p>The shadow system uses multiple techniques based on light type:</p>
+
+                <p><strong>Standard Shadow Maps:</strong> For directional and spot lights using depth textures</p>
+                <p><strong>Cube Shadow Maps:</strong> For point lights using cube map depth textures</p>
+                <p><strong>Dynamic Resolution:</strong> 1024x1024 shadow maps with configurable quality settings</p>
+            </div>
+            <div class="media-content">
+                <div class="code-block" data-language="C++">
+                    void InitShadowForLight(LightComponent& light) {
+                    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+                    if (light.type == LightType::Point) {
+                    // Create cube shadow map for omnidirectional shadows
+                    glGenTextures(1, &light.cubeDepthMap);
+                    glBindTexture(GL_TEXTURE_CUBE_MAP, light.cubeDepthMap);
+                    for (unsigned int i = 0; i < 6; ++i) { glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0,
+                        GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL); } }
+                        else { // Create standard depth map for directional/spot lights glGenTextures(1,
+                        &light.depthMap); glBindTexture(GL_TEXTURE_2D, light.depthMap); glTexImage2D(GL_TEXTURE_2D, 0,
+                        GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL); }
+                        }</div>
+                </div>
+            </div>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Shadow Map Generation</h4>
+                        <p>Depth maps are rendered from each light's perspective, storing distance information for
+                            shadow calculations.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Light Space Transformation</h4>
+                        <p>World positions are transformed to light space using appropriate projection matrices for each
+                            light type.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Shadow Testing</h4>
+                        <p>Fragment depths are compared against shadow map values to determine if surfaces are in
+                            shadow.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h4>Soft Shadow Filtering</h4>
+                        <p>PCF (Percentage Closer Filtering) is used to create smooth shadow edges and reduce aliasing
+                            artifacts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-two-column">
+                <div class="media-content">
+                    <div class="media-item">
+                        <!-- Aquí va tu imagen/video del sistema de detección -->
+                        <video width="640" height="360" controls>
+                            <source src="../Images/LUQUI/forwardshadow.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="media-caption">Forward rendering shadows demo</div>
+                    </div>
+                </div>
+
+                <div class="media-content">
+                    <div class="media-item">
+                        <!-- Aquí va tu imagen/video del sistema de detección -->
+                        <video width="640" height="360" controls>
+                            <source src="../Images/LUQUI/deferred_shadows.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="media-caption">Deferred rendering shadows demo</div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Skybox System Section -->
+    <section class="section" id="skybox">
+        <h2 class="section-title">Skybox System</h2>
+        <p class="section-intro">
+            Environmental rendering system using cube maps to create infinite distance backgrounds. Integrated
+            seamlessly with the rendering pipeline for realistic sky and environment representation.
+        </p>
+
+        <div class="content-two-column">
+            <div class="media-content">
+                <div class="code-block" data-language="C++">
+                    class Skybox {
+                    private:
+                    unsigned int textureID; // Cube map texture
+                    unsigned int VAO, VBO; // Geometry buffers
+
+                    public:
+                    Skybox(const std::vector<std::string>& faces);
+                        void Draw(Program& skyboxProgram,
+                        const glm::mat4& view,
+                        glm::mat4& projection);
+
+                        private:
+                        void LoadCubemap(const std::vector<std::string>& faces);
+                            void SetupCube();
+                            };
+
+                            void Skybox::Draw(Program& skyboxProgram,
+                            const glm::mat4& view,
+                            glm::mat4& projection) {
+                            glDepthFunc(GL_LEQUAL); // Render at max depth
+
+                            // Remove translation from view matrix
+                            glm::mat4 viewNoTranslation = glm::mat4(glm::mat3(view));
+
+                            skyboxProgram.setmat4("view", viewNoTranslation);
+                            skyboxProgram.setmat4("projection", projection);
+
+                            glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+                            glDrawArrays(GL_TRIANGLES, 0, 36);
+                            }</div>
+            </div>
+            <div class="text-content">
+                <h3 style="color: var(--primary-cyan); margin-bottom: 1rem;">Cube Map Implementation</h3>
+                <p>The skybox system uses OpenGL cube maps with six texture faces representing the complete environment
+                    around the viewer.</p>
+
+                <p><strong>Depth Optimization:</strong> Skybox is rendered with maximum depth value and <span
+                        class="tech-highlight">GL_LEQUAL</span> depth testing</p>
+
+                <p><strong>View Matrix Handling:</strong> Translation is removed from the view matrix to maintain
+                    infinite distance illusion</p>
+            </div>
+        </div>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4>Cube Map Loading</h4>
+                    <p>Six texture images are loaded and bound to cube map faces: +X, -X, +Y, -Y, +Z, -Z representing
+                        right, left, top, bottom, front, back.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4>Geometry Setup</h4>
+                    <p>A unit cube is generated with vertices optimized for cube map sampling, ensuring proper texture
+                        coordinate interpolation.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4>Rendering Integration</h4>
+                    <p>Skybox is rendered after opaque geometry but before transparent objects, with depth writing
+                        disabled.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h3 class="card-title">Texture Configuration</h3>
+                <div class="card-content">
+                    <ul>
+                        <li><strong>Format:</strong> RGB for color data</li>
+                        <li><strong>Filtering:</strong> Linear interpolation</li>
+                        <li><strong>Wrapping:</strong> Clamp to edge</li>
+                        <li><strong>Mipmaps:</strong> Not required for skyboxes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content-card">
+                <h3 class="card-title">Performance Features</h3>
+                <div class="card-content">
+                    <ul>
+                        <li>Early depth rejection optimization</li>
+                        <li>Minimal vertex processing</li>
+                        <li>Efficient cube map sampling</li>
+                        <li>Single draw call rendering</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Lucas Calatayud. Game Developer & Engine Programmer</p>
+    </footer>
+
+    <script>
+        // Create floating circuits
+        function createCircuits() {
+            const circuitsContainer = document.getElementById('circuits');
+            const circuitCount = 50;
+            const types = ['small', 'medium', 'large'];
+
+            for (let i = 0; i < circuitCount; i++) {
+                const circuit = document.createElement('div');
+                const type = types[Math.floor(Math.random() * types.length)];
+                circuit.className = `circuit ${type}`;
+                circuit.style.left = Math.random() * 100 + '%';
+                circuit.style.animationDelay = Math.random() * 15 + 's';
+                circuit.style.animationDuration = (Math.random() * 8 + 10) + 's';
+                circuitsContainer.appendChild(circuit);
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Initialize effects
+        createCircuits();
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections and cards for animations
+        document.querySelectorAll('.section, .content-card, .media-item').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', function () {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            const rate = scrolled * -0.2;
+            hero.style.transform = `translateY(${rate}px)`;
+        });
+
+        // Code block syntax highlighting effect
+        document.querySelectorAll('.code-block').forEach(block => {
+            block.addEventListener('mouseenter', function () {
+                this.style.borderColor = 'var(--primary-cyan)';
+            });
+
+            block.addEventListener('mouseleave', function () {
+                this.style.borderColor = 'var(--glass-border)';
+            });
+        });
+    </script>
+</body>
+
+</html>

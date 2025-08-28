@@ -738,16 +738,19 @@
 
     <section class="section" id="projects">
         <h2 class="section-title">Featured Projects</h2>
+        <h2 class="hero-subtitle">Click a project's image to see more about a project</h2>
         <div class="projects-grid">
-            <div class="project-card" >
+            <div class="project-card">
                 <div class="project-image" onclick="window.location.href='Sections/InsideTheCorwNest.html'">
                     <img src="Images/CrowNest.png" alt="Inside the Crow's Nest" class="static-image">
-                    <img src="Images/Gifs/Inside the crow's nest.gif" alt="Inside the Crow's Nest Gameplay" class="gif-image">
+                    <img src="Images/Gifs/Inside the crow's nest.gif" alt="Inside the Crow's Nest Gameplay"
+                        class="gif-image">
                 </div>
                 <div class="project-content">
-                    <h3 class="project-title" onclick="window.location.href='Sections/InsideTheCorwNest.html'">Inside the Crow's Nest</h3>
-                    <p class="project-description" onclick="window.location.href='Sections/InsideTheCorwNest.html'">Inside the Crow's Nest is a game inspired by classic survival horror, click on the image to see more about this
-                    </p>
+                    <h3 class="project-title" onclick="window.location.href='Sections/InsideTheCorwNest.html'">Inside
+                        the Crow's Nest</h3>
+                    <p class="project-description" onclick="window.location.href='Sections/InsideTheCorwNest.html'">
+                        Inside the Crow's Nest is a game inspired by classic survival horror</p>
                     <div class="project-tech" onclick="window.location.href='Sections/InsideTheCorwNest.html'">
                         <span class="tech-tag">Unreal Engine 5.4</span>
                         <span class="tech-tag">C++</span>
@@ -761,13 +764,15 @@
             </div>
 
             <div class="project-card">
-                <div class="project-image">
+                <div class="project-image" onclick="window.location.href='Sections/LUQUIEngine.html'">
                     <img src="Images/LUQUI.png" alt="LUQUI Engine" class="static-image">
                     <img src="Images/Gifs/LUQUI ENGINE.gif" alt="LUQUI Engine Demo" class="gif-image">
                 </div>
                 <div class="project-content">
-                    <h3 class="project-title">LUQUI Engine</h3>
-                    <p class="project-description">Custom graphics engine built from scratch using OpenGL and modern
+                    <h3 class="project-title" onclick="window.location.href='Sections/LUQUIEngine.html'">LUQUI Engine
+                    </h3>
+                    <p class="project-description" onclick="window.location.href='Sections/LUQUIEngine.html'">Custom
+                        graphics engine built from scratch using OpenGL and modern
                         C++.</p>
                     <div class="project-tech">
                         <span class="tech-tag">C++</span>
@@ -816,8 +821,8 @@
                         <span class="tech-tag">Unity</span>
                     </div>
                     <div class="project-links">
-                        <a href="Files/Space-Trip.zip" download="Space-Trip.zip"
-                            class="cta-button secondary">Download Demo</a>
+                        <a href="Files/Space-Trip.zip" download="Space-Trip.zip" class="cta-button secondary">Download
+                            Demo</a>
                     </div>
                 </div>
             </div>
@@ -905,7 +910,7 @@
 
         document.querySelectorAll('.project-card').forEach(card => {
             const gifImage = card.querySelector('.gif-image');
-            
+
             card.addEventListener('mouseenter', function () {
                 this.style.transform = 'translateY(-15px) scale(1.02)';
                 if (gifImage && gifImage.src.includes('.gif')) {
@@ -980,13 +985,13 @@
             type();
         }
 
-       
+
         window.addEventListener('load', function () {
             const subtitle = document.querySelector('.hero-subtitle');
             const originalText = subtitle.textContent;
             typeWriter(subtitle, originalText, 80);
-            
-           
+
+
             document.querySelectorAll('.gif-image').forEach(img => {
                 if (img.src.includes('.gif')) {
                     const preloadImg = new Image();
