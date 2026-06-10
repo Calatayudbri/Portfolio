@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahuacatl and the Chromatic Temple – Lucas Calatayud</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Exo+2:wght@300;400;500;600&family=Orbitron:wght@400;700&display=swap');
+
+        *  { margin:0; padding:0; box-sizing:border-box; }
+
+        :root {
+            /* Prehispanic palette — stone, obsidian, jade, sun, blood, sky */
+            --obsidian:  #0A0806;
+            --stone:     #1A1510;
+            --stone2:    #241E16;
+            --stone3:    #2F2720;
+            --carved:    #3D3328;
+            --dust:      #998A72;
+            --dust-dim:  #6B5E4A;
+
+            --jade:   #3ECF8E;
+            --blood:  #D94F2A;
+            --sky:    #4A9FD4;
+            --sun:    #E8A020;
+            --gold:   #C88C30;
+
+            --jade-dim:  rgba(62,207,142,.16);
+            --blood-dim: rgba(217,79,42,.16);
+            --sky-dim:   rgba(74,159,212,.16);
+            --sun-dim:   rgba(232,160,32,.14);
+
+            --jade-border:  rgba(62,207,142,.38);
+            --blood-border: rgba(217,79,42,.38);
+            --sky-border:   rgba(74,159,212,.38);
+            --sun-border:   rgba(232,160,32,.32);
+
+            --text:     #EDE5D5;
+            --text-dim: #9A8E7A;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--obsidian);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.72;
+        }
+
+        /* ── STONE TEXTURE bg ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: -3;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% 0%,   rgba(200,140,48,.06) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 40% at 10% 60%,  rgba(217,79,42,.05) 0%, transparent 55%),
+                radial-gradient(ellipse 55% 40% at 90% 35%,  rgba(74,159,212,.05) 0%, transparent 55%),
+                radial-gradient(ellipse 70% 45% at 50% 100%, rgba(62,207,142,.05) 0%, transparent 55%);
+        }
+
+        /* animated glyph particles */
+        .glyphs { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+        .glyph {
+            position: absolute;
+            font-family: 'Cinzel', serif;
+            font-size: var(--sz, 1rem);
+            color: var(--gc, rgba(200,140,48,.06));
+            animation: glyph-drift var(--dur, 18s) var(--delay, 0s) infinite linear;
+            user-select: none;
+        }
+        @keyframes glyph-drift {
+            0%   { transform: translateY(105vh) rotate(0deg);   opacity: 0; }
+            6%   { opacity: 1; }
+            94%  { opacity: 0.4; }
+            100% { transform: translateY(-8vh) rotate(var(--rot,20deg)); opacity: 0; }
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(10,8,6,.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(200,140,48,.15);
+            z-index: 1000; transition: box-shadow .3s;
+        }
+        nav.scrolled {
+            box-shadow: 0 3px 24px rgba(0,0,0,.7);
+            border-bottom-color: rgba(200,140,48,.3);
+        }
+        .nav-inner {
+            max-width: 1380px; margin: 0 auto;
+            padding: .85rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700;
+            text-decoration: none; color: var(--gold); letter-spacing: .08em;
+        }
+        .logo:hover { color: var(--sun); }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            color: var(--text-dim); text-decoration: none;
+            font-size: .9rem; letter-spacing: .04em;
+            transition: color .2s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0; height: 1px; background: var(--gold);
+            transition: width .3s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+        @media(max-width:680px){ .nav-links { display: none; } }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+
+        /* stepped pyramid silhouette */
+        .pyramid-bg {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 900px; opacity: .07; pointer-events: none;
+        }
+
+        /* sun disc glow */
+        .sun-glow {
+            position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
+            width: 380px; height: 380px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(232,160,32,.22) 0%, rgba(217,79,42,.08) 40%, transparent 70%);
+            animation: sun-pulse 5s ease-in-out infinite;
+        }
+        @keyframes sun-pulse {
+            0%,100% { transform: translateX(-50%) scale(1);   opacity: .7; }
+            50%      { transform: translateX(-50%) scale(1.08); opacity: 1; }
+        }
+
+        /* stepped border decoration */
+        .stepped-top, .stepped-bot {
+            position: absolute; left: 0; right: 0; height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--gold) 0, var(--gold) 8px,
+                transparent 8px, transparent 16px
+            );
+            opacity: .25;
+        }
+        .stepped-top { top: 0; }
+        .stepped-bot { bottom: 0; }
+
+        .hero-content { position: relative; z-index: 5; padding: 0 2rem; max-width: 900px; }
+
+        .spirit-row {
+            display: flex; justify-content: center; gap: 1.8rem;
+            margin-bottom: 2.2rem;
+        }
+        .spirit-badge {
+            display: flex; flex-direction: column; align-items: center; gap: .4rem;
+            padding: .7rem 1.1rem; border-radius: 8px;
+            border: 1px solid; font-size: .72rem; letter-spacing: .12em;
+            font-family: 'Cinzel', serif; text-transform: uppercase;
+            transition: transform .3s;
+        }
+        .spirit-badge:hover { transform: translateY(-4px); }
+        .spirit-badge.blood { background: var(--blood-dim); border-color: var(--blood-border); color: var(--blood); }
+        .spirit-badge.jade  { background: var(--jade-dim);  border-color: var(--jade-border);  color: var(--jade); }
+        .spirit-badge.sky   { background: var(--sky-dim);   border-color: var(--sky-border);   color: var(--sky); }
+        .spirit-badge-icon { font-size: 1.5rem; }
+
+        .hero-eyebrow {
+            font-family: 'Orbitron', monospace; font-size: .7rem;
+            letter-spacing: .25em; color: var(--dust); margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(2rem, 5.5vw, 4.2rem);
+            font-weight: 700; line-height: 1.1; margin-bottom: .8rem;
+            color: var(--text);
+            text-shadow: 0 0 60px rgba(232,160,32,.25), 0 2px 0 rgba(0,0,0,.8);
+        }
+        .hero h1 .r { color: var(--blood); }
+        .hero h1 .g { color: var(--jade); }
+        .hero h1 .b { color: var(--sky); }
+
+        .hero-tagline {
+            font-family: 'Cinzel', serif; font-size: 1rem;
+            color: var(--gold); letter-spacing: .1em;
+            margin-bottom: 1.6rem;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem; color: var(--text-dim);
+            max-width: 640px; margin: 0 auto 2.2rem;
+            line-height: 1.82;
+        }
+
+        .jam-badge {
+            display: inline-block;
+            background: var(--sun-dim); border: 1px solid var(--sun-border);
+            border-radius: 6px; padding: .35rem .9rem;
+            font-family: 'Cinzel', serif; font-size: .75rem;
+            letter-spacing: .1em; color: var(--sun);
+        }
+
+        .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: 1.4rem; }
+        .chip {
+            display: inline-block; font-family: 'Orbitron', monospace; font-size: .68rem;
+            letter-spacing: .06em; padding: .2rem .65rem; border-radius: 4px;
+            border: 1px solid rgba(255,255,255,.1); color: var(--dust);
+            background: rgba(255,255,255,.04);
+        }
+        .chip.j { background: var(--jade-dim);  border-color: var(--jade-border);  color: var(--jade); }
+        .chip.r { background: var(--blood-dim); border-color: var(--blood-border); color: var(--blood); }
+        .chip.b { background: var(--sky-dim);   border-color: var(--sky-border);   color: var(--sky); }
+
+        /* ── SECTION ── */
+        .section { padding: 7rem 2rem; max-width: 1320px; margin: 0 auto; }
+
+        /* glyph divider */
+        .glyph-divider {
+            text-align: center; padding: 1.5rem 0;
+            font-family: 'Cinzel', serif; font-size: .85rem;
+            letter-spacing: .4em; color: rgba(200,140,48,.25);
+            user-select: none;
+            overflow: hidden;
+        }
+        .glyph-divider::before, .glyph-divider::after {
+            content: '';
+            display: inline-block;
+            width: 30%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200,140,48,.25));
+            vertical-align: middle; margin: 0 1rem;
+        }
+        .glyph-divider::after {
+            background: linear-gradient(90deg, rgba(200,140,48,.25), transparent);
+        }
+
+        /* section heading */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+            font-weight: 700; text-align: center;
+            margin-bottom: .6rem; color: var(--text);
+        }
+        .section-title .acc-blood { color: var(--blood); }
+        .section-title .acc-jade  { color: var(--jade); }
+        .section-title .acc-sky   { color: var(--sky); }
+        .section-title .acc-gold  { color: var(--gold); }
+
+        .title-glyphs {
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            margin-bottom: 3rem; font-family: 'Cinzel', serif;
+            font-size: .72rem; letter-spacing: .35em; color: rgba(200,140,48,.35);
+        }
+        .title-glyphs::before, .title-glyphs::after {
+            content: ''; flex: 1; max-width: 180px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200,140,48,.35));
+        }
+        .title-glyphs::after {
+            background: linear-gradient(90deg, rgba(200,140,48,.35), transparent);
+        }
+
+        .section-intro {
+            text-align: center; font-size: 1.05rem; color: var(--text-dim);
+            max-width: 740px; margin: 0 auto 3.5rem; line-height: 1.8;
+        }
+
+        /* ── STONE CARDS ── */
+        .scard {
+            background: var(--stone2);
+            border-radius: 10px;
+            padding: 1.8rem;
+            border: 1px solid rgba(255,255,255,.06);
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+            position: relative;
+        }
+        /* carved corner accents */
+        .scard::before, .scard::after {
+            content: '';
+            position: absolute; width: 12px; height: 12px;
+            border-color: rgba(200,140,48,.2);
+        }
+        .scard::before { top: 6px; left: 6px; border-top: 1px solid; border-left: 1px solid; }
+        .scard::after  { bottom: 6px; right: 6px; border-bottom: 1px solid; border-right: 1px solid; }
+        .scard:hover { transform: translateY(-7px); }
+        .scard.blood { border-color: var(--blood-border); }
+        .scard.blood:hover { box-shadow: 0 18px 48px rgba(217,79,42,.2); }
+        .scard.jade  { border-color: var(--jade-border); }
+        .scard.jade:hover  { box-shadow: 0 18px 48px rgba(62,207,142,.2); }
+        .scard.sky   { border-color: var(--sky-border); }
+        .scard.sky:hover   { box-shadow: 0 18px 48px rgba(74,159,212,.2); }
+        .scard.gold  { border-color: var(--sun-border); }
+        .scard.gold:hover  { box-shadow: 0 18px 48px rgba(232,160,32,.16); }
+        .scard.neutral { border-color: rgba(255,255,255,.07); }
+        .scard.neutral:hover { box-shadow: 0 18px 48px rgba(255,255,255,.05); border-color: rgba(255,255,255,.16); }
+
+        .scard-title {
+            font-family: 'Cinzel', serif; font-size: 1.05rem;
+            font-weight: 600; margin-bottom: .7rem;
+        }
+        .scard-title.j { color: var(--jade); }
+        .scard-title.r { color: var(--blood); }
+        .scard-title.b { color: var(--sky); }
+        .scard-title.g { color: var(--gold); }
+        .scard-title.w { color: var(--text); }
+        .scard p { color: var(--text-dim); line-height: 1.75; }
+        .scard ul { color: var(--text-dim); padding-left: 1.4rem; line-height: 2; margin-top: .5rem; }
+
+        /* ── GRIDS ── */
+        .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.6rem; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: start; }
+        @media(max-width:1024px){ .grid-3{grid-template-columns:repeat(2,1fr);} .grid-2{grid-template-columns:1fr;gap:2rem;} }
+        @media(max-width:560px) { .grid-3{grid-template-columns:1fr;} }
+
+        /* ── SPIRITS / MASK PILLS ── */
+        .spirits-row {
+            display: flex; justify-content: center; gap: 2rem;
+            flex-wrap: wrap; margin: 3rem 0;
+        }
+        .spirit-card {
+            display: flex; flex-direction: column; align-items: center; gap: .8rem;
+            padding: 1.8rem 2.2rem; border-radius: 12px; border: 1px solid;
+            min-width: 160px; text-align: center;
+            transition: transform .3s, box-shadow .3s;
+            position: relative; overflow: hidden;
+        }
+        .spirit-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        }
+        .spirit-card:hover { transform: translateY(-8px); }
+        .spirit-card.sc-r { background: var(--blood-dim); border-color: var(--blood-border); }
+        .spirit-card.sc-r::before { background: var(--blood); }
+        .spirit-card.sc-r:hover { box-shadow: 0 20px 50px rgba(217,79,42,.28); }
+        .spirit-card.sc-g { background: var(--jade-dim);  border-color: var(--jade-border); }
+        .spirit-card.sc-g::before { background: var(--jade); }
+        .spirit-card.sc-g:hover  { box-shadow: 0 20px 50px rgba(62,207,142,.28); }
+        .spirit-card.sc-b { background: var(--sky-dim);   border-color: var(--sky-border); }
+        .spirit-card.sc-b::before { background: var(--sky); }
+        .spirit-card.sc-b:hover  { box-shadow: 0 20px 50px rgba(74,159,212,.28); }
+        .spirit-card.sc-n { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); }
+        .spirit-card.sc-n::before { background: var(--dust); }
+        .spirit-card-icon { font-size: 2.4rem; }
+        .spirit-name {
+            font-family: 'Cinzel', serif; font-size: .85rem;
+            font-weight: 700; letter-spacing: .08em;
+        }
+        .spirit-card.sc-r .spirit-name { color: var(--blood); }
+        .spirit-card.sc-g .spirit-name { color: var(--jade); }
+        .spirit-card.sc-b .spirit-name { color: var(--sky); }
+        .spirit-card.sc-n .spirit-name { color: var(--dust); }
+        .spirit-role { font-size: .78rem; color: var(--text-dim); }
+        .spirit-effect { font-size: .8rem; color: var(--text-dim); font-style: italic; line-height: 1.5; }
+
+        /* ── PROCESS STEPS ── */
+        .steps { display: flex; flex-direction: column; gap: 1.1rem; }
+        .step {
+            display: flex; gap: 1.4rem; align-items: flex-start;
+            background: var(--stone2); border-radius: 10px;
+            padding: 1.3rem 1.5rem; border: 1px solid rgba(255,255,255,.05);
+            transition: transform .25s, border-color .25s;
+        }
+        .step:hover { transform: translateX(8px); }
+        .step.r:hover { border-color: var(--blood-border); }
+        .step.j:hover { border-color: var(--jade-border); }
+        .step.b:hover { border-color: var(--sky-border); }
+        .step.g:hover { border-color: var(--sun-border); }
+        .step.w:hover { border-color: rgba(255,255,255,.18); }
+
+        .step-num {
+            font-family: 'Orbitron', monospace; font-size: .68rem;
+            font-weight: 700; letter-spacing: .08em;
+            width: 34px; height: 34px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 3px;
+        }
+        .step-num.r { background: var(--blood-dim); color: var(--blood); border: 1px solid var(--blood-border); }
+        .step-num.j { background: var(--jade-dim);  color: var(--jade);  border: 1px solid var(--jade-border); }
+        .step-num.b { background: var(--sky-dim);   color: var(--sky);   border: 1px solid var(--sky-border); }
+        .step-num.g { background: var(--sun-dim);   color: var(--sun);   border: 1px solid var(--sun-border); }
+        .step-num.w { background: rgba(255,255,255,.06); color: var(--text); border: 1px solid rgba(255,255,255,.12); }
+
+        .step-body h4 { font-family: 'Cinzel', serif; font-size: .95rem; margin-bottom: .35rem; color: var(--text); }
+        .step-body p  { color: var(--text-dim); font-size: .9rem; line-height: 1.7; }
+
+        /* ── TIMELINE ── */
+        .timeline { position: relative; padding-left: 2.4rem; }
+        .timeline::before {
+            content: ''; position: absolute; left: 8px; top: 6px; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--blood), var(--jade), var(--sky));
+        }
+        .tl-item { position: relative; margin-bottom: 2rem; }
+        .tl-dot {
+            position: absolute; left: -2.05rem; top: 5px;
+            width: 10px; height: 10px; border-radius: 50%;
+        }
+        .tl-dot.r { background: var(--blood); box-shadow: 0 0 6px var(--blood); }
+        .tl-dot.j { background: var(--jade);  box-shadow: 0 0 6px var(--jade); }
+        .tl-dot.b { background: var(--sky);   box-shadow: 0 0 6px var(--sky); }
+        .tl-dot.g { background: var(--sun);   box-shadow: 0 0 6px var(--sun); }
+        .tl-dot.w { background: var(--dust);  box-shadow: 0 0 6px var(--dust); }
+        .tl-item h4 { font-family: 'Cinzel', serif; font-size: .95rem; margin-bottom: .4rem; color: var(--text); }
+        .tl-item p  { color: var(--text-dim); font-size: .9rem; line-height: 1.72; }
+
+        /* ── CODE INLINE ── */
+        code {
+            font-family: 'Orbitron', monospace; font-size: .7rem;
+            padding: .12rem .42rem; border-radius: 3px;
+            background: rgba(255,255,255,.07); color: var(--text);
+            border: 1px solid rgba(255,255,255,.1); letter-spacing: .02em;
+        }
+        code.r { background: var(--blood-dim); color: var(--blood); border-color: var(--blood-border); }
+        code.j { background: var(--jade-dim);  color: var(--jade);  border-color: var(--jade-border); }
+        code.b { background: var(--sky-dim);   color: var(--sky);   border-color: var(--sky-border); }
+
+        /* ── MEDIA ── */
+        .media-wrap {
+            background: var(--stone3); border-radius: 10px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,.07);
+        }
+        .media-wrap img, .media-wrap video { width:100%; height:auto; display:block; }
+        .media-caption {
+            padding: .65rem 1rem; font-size: .8rem;
+            color: var(--text-dim); font-style: italic;
+            border-top: 1px solid rgba(255,255,255,.05);
+        }
+
+        /* ── SCROLL REVEAL ── */
+        .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: rgba(0,0,0,.7);
+            border-top: 1px solid rgba(200,140,48,.15);
+            text-align: center; padding: 3rem 2rem;
+            color: var(--dust); font-size: .88rem;
+            font-family: 'Cinzel', serif; letter-spacing: .06em;
+        }
+
+        /* ── label ── */
+        .eyebrow {
+            font-family: 'Orbitron', monospace; font-size: .68rem;
+            letter-spacing: .2em; text-transform: uppercase; color: var(--dust-dim);
+            text-align: center; display: block; margin-bottom: .6rem;
+        }
+        /* ── MASK CAROUSEL ── */
+        .mask-carousel {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.08);
+            background: var(--stone2);
+            user-select: none;
+        }
+        .mc-track { position: relative; width: 100%; }
+        .mc-slide {
+            display: none;
+            flex-direction: column;
+        }
+        .mc-slide.active { display: flex; }
+        .mc-slide img {
+            width: 100%; height: auto; display: block;
+            /* fade in when slide activates */
+            animation: mc-fadein .35s ease;
+        }
+        @keyframes mc-fadein {
+            from { opacity: 0; transform: scale(1.012); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .mc-label {
+            display: flex; align-items: center; gap: .6rem;
+            padding: .75rem 1.2rem;
+            font-family: 'Cinzel', serif; font-size: .82rem;
+            letter-spacing: .06em; color: var(--text-dim);
+            border-top: 1px solid rgba(255,255,255,.05);
+        }
+        .mc-label-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+        .mc-btn {
+            position: absolute; top: 50%; transform: translateY(-60%);
+            width: 42px; height: 42px; border-radius: 50%;
+            background: rgba(10,8,6,.75); backdrop-filter: blur(6px);
+            border: 1px solid rgba(200,140,48,.3);
+            color: var(--gold); font-size: 1.1rem;
+            cursor: pointer; transition: background .2s, border-color .2s, transform .2s;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10;
+        }
+        .mc-btn:hover {
+            background: rgba(200,140,48,.15);
+            border-color: rgba(200,140,48,.7);
+            transform: translateY(-60%) scale(1.08);
+        }
+        .mc-prev { left: 12px; }
+        .mc-next { right: 12px; }
+
+        .mc-dots {
+            position: absolute; bottom: 42px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 7px; z-index: 10;
+        }
+        .mc-dot {
+            width: 9px; height: 9px; border-radius: 50%;
+            background: var(--dust); opacity: .4;
+            border: none; cursor: pointer;
+            transition: opacity .25s, transform .25s;
+            padding: 0;
+        }
+        .mc-dot.active { opacity: 1; transform: scale(1.25); }
+    </style>
+</head>
+<body>
+
+<!-- Floating glyph symbols -->
+<div class="glyphs" id="glyphs"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="logo">← Portfolio</a>
+        <ul class="nav-links">
+            <li><a href="#spirits">Masks</a></li>
+            <li><a href="#camera">Camera</a></li>
+            <li><a href="#player">Player</a></li>
+            <li><a href="#audio">Audio</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="home">
+    <div class="stepped-top"></div>
+
+    <!-- pyramid silhouette -->
+    <svg class="pyramid-bg" viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="450,10 850,380 50,380" fill="rgba(200,140,48,0.9)"/>
+        <rect x="340" y="280" width="220" height="20" fill="rgba(200,140,48,1)"/>
+        <rect x="300" y="300" width="300" height="20" fill="rgba(200,140,48,1)"/>
+        <rect x="255" y="320" width="390" height="20" fill="rgba(200,140,48,1)"/>
+        <rect x="200" y="340" width="500" height="20" fill="rgba(200,140,48,1)"/>
+        <rect x="130" y="360" width="640" height="20" fill="rgba(200,140,48,1)"/>
+    </svg>
+
+    <div class="sun-glow"></div>
+
+    <div class="hero-content">
+        <div class="spirit-row">
+            <div class="spirit-badge blood"><div class="spirit-badge-icon">🐆</div>Chichiltic</div>
+            <div class="spirit-badge jade"> <div class="spirit-badge-icon">🐒</div>Xoxoctic</div>
+            <div class="spirit-badge sky">  <div class="spirit-badge-icon">🐍</div>Texotli</div>
+        </div>
+        <p class="hero-eyebrow">Global Game Jam 2026 · Theme: Mask · Adevi Valencia</p>
+        <h1>Ahuacatl and the<br><span class="r">Ch</span><span class="g">ro</span><span class="b">ma</span>tic Temple</h1>
+        <p class="hero-tagline">Puzzle Platformer · Unreal Engine 5 · C++</p>
+        <p class="hero-desc">
+            An ancient Mesoamerican temple holds three colour channels, each guarded by a spirit.
+            Don the masks of Chichiltic the Jaguar, Xoxoctic the Monkey, and Texotli the Serpent
+            to hide a colour from the world and uncover hidden paths, platforms, and enemies.
+            I was responsible for the core gameplay systems: the RGB mask mechanic and its post-process
+            pipeline, the custom camera manager, the projectile pool, the player controller, and the full
+            death-and-reload flow — all written in C++ with Blueprint-extensible hooks for the rest of the team.
+        </p>
+        <span class="jam-badge">✦ Game Jam Submission · GGJ 2026 ✦</span>
+        <div class="chips">
+            <span class="chip r">Unreal Engine 5</span>
+            <span class="chip j">C++ / Blueprints</span>
+            <span class="chip b">Enhanced Input</span>
+            <span class="chip">Post Process</span>
+            <span class="chip">World Subsystems</span>
+        </div>
+    </div>
+
+    <div class="stepped-bot"></div>
+</section>
+
+<div class="glyph-divider" aria-hidden="true">✦ ✦ ✦</div>
+
+<!-- ═══ MASK SYSTEM ═══ -->
+<section class="section reveal" id="spirits">
+    <span class="eyebrow">Core Mechanic</span>
+    <h2 class="section-title">
+        The Three Spirits — <span class="acc-gold">RGB Mask System</span>
+    </h2>
+    <div class="title-glyphs">✦ System Architecture ✦</div>
+    <p class="section-intro">
+        The central system I designed for the jam. Each spirit grants the player a mask that hides one
+        colour channel from the world — the key design challenge was making every coloured object in the
+        level react instantly and reliably to the active mask, regardless of how many actors are in the
+        scene or in what order they spawn. I solved it with a three-class architecture built around a
+        World Subsystem that decouples every actor from the player completely.
+    </p>
+
+    <!-- Mask world carousel -->
+    <div class="mask-carousel reveal" style="margin-top:3rem;">
+        <div class="mc-track" id="mcTrack">
+            <div class="mc-slide active">
+                <img src="..\Images\RGBMask\NoMask.png" alt="World view with no mask equipped" />
+                <div class="mc-label">
+                    <span class="mc-label-dot" style="background:var(--dust)"></span>
+                    No Mask — all colour channels visible — no spirit's power active
+                </div>
+            </div>
+            <div class="mc-slide">
+                <video autoplay muted loop playsinline>
+                    <source src="..\Images\RGBMask\redmask.mp4" type="video/mp4" />
+                </video>
+                <div class="mc-label">
+                    <span class="mc-label-dot" style="background:var(--blood)"></span>
+                    Chichiltic — red channel hidden
+                </div>
+            </div>
+            <div class="mc-slide">
+                <video autoplay muted loop playsinline>
+                    <source src="..\Images\RGBMask\greenmask.mp4" type="video/mp4" />
+                </video>
+                <div class="mc-label">
+                    <span class="mc-label-dot" style="background:var(--jade)"></span>
+                    Xoxoctic — green channel hidden
+                </div>
+            </div>
+            <div class="mc-slide">
+                <video autoplay muted loop playsinline>
+                    <source src="..\Images\RGBMask\bluemask.mp4" type="video/mp4" />
+                </video>
+                <div class="mc-label">
+                    <span class="mc-label-dot" style="background:var(--sky)"></span>
+                    Texotli — blue channel hidden
+                </div>
+            </div>
+        </div>
+        <button class="mc-btn mc-prev" id="mcPrev" aria-label="Previous mask">&#8592;</button>
+        <button class="mc-btn mc-next" id="mcNext" aria-label="Next mask">&#8594;</button>
+        <div class="mc-dots" id="mcDots">
+            <button class="mc-dot active" aria-label="No mask"></button>
+            <button class="mc-dot" style="background:var(--blood);opacity:.5" aria-label="Red mask"></button>
+            <button class="mc-dot" style="background:var(--jade);opacity:.5" aria-label="Green mask"></button>
+            <button class="mc-dot" style="background:var(--sky);opacity:.5" aria-label="Blue mask"></button>
+        </div>
+    </div>
+
+    <div class="grid-2 reveal" style="margin-top:3.5rem;">
+        <div>
+            <h3 style="font-family:'Cinzel',serif;font-size:1.2rem;margin-bottom:1.2rem;color:var(--gold);">Three-Class Architecture</h3>
+            <p style="color:var(--text-dim);line-height:1.8;margin-bottom:1.2rem;">
+                I split the system into three classes with a strict dependency direction.
+                <code class="r">ARGBMaskCharacter</code> owns the active mask state and exposes it
+                via a multicast delegate <code>OnMaskChanged</code> — nothing else stores the state.
+                <code class="j">UMaskVisibilitySubsystem</code> is a World Subsystem that binds to
+                that delegate and maintains a <code>TSet</code> of weak pointers to every registered
+                component. <code class="b">UMaskVisibilityComponent</code> is the actor-side piece:
+                any object that reacts to the mask adds this component and configures its own visibility
+                rules, with zero knowledge of the player.
+            </p>
+            <p style="color:var(--text-dim);line-height:1.8;">
+                The tricky part in a jam context was spawn-order safety — the subsystem can initialise
+                before the PlayerController even exists. I handled this with a 100 ms retry timer that
+                keeps trying to bind until the pawn is ready, so the system works regardless of level
+                load order.
+            </p>
+        </div>
+        <div>
+            <div class="steps">
+                <div class="step r">
+                    <div class="step-num r">1</div>
+                    <div class="step-body">
+                        <h4>Input triggers mask toggle</h4>
+                        <p>A dedicated <code>UInputAction</code> per colour fires the controller's
+                           <code>ToggleMask()</code> — with a 0.5 s cooldown to prevent accidental
+                           double-taps.</p>
+                    </div>
+                </div>
+                <div class="step j">
+                    <div class="step-num j">2</div>
+                    <div class="step-body">
+                        <h4>Delayed commit + post-process</h4>
+                        <p><code>OnMaskChangeStarted</code> fires immediately for UI. After
+                           <code class="j">MaskChangeDelay</code>, <code>ApplyMaskChange()</code>
+                           commits the new state and swaps the PostProcessVolume materials.</p>
+                    </div>
+                </div>
+                <div class="step b">
+                    <div class="step-num b">3</div>
+                    <div class="step-body">
+                        <h4>Subsystem notifies all actors</h4>
+                        <p><code class="j">ApplyMaskToAll()</code> iterates a
+                           <code class="b">TWeakObjectPtr</code> set, prunes stale entries, and calls
+                           <code>ApplyMask()</code> on each living component.</p>
+                    </div>
+                </div>
+                <div class="step w">
+                    <div class="step-num w">4</div>
+                    <div class="step-body">
+                        <h4>Per-actor visibility & FX</h4>
+                        <p>Each component checks its <code>EMaskVisibilityMode</code> (hide-in or show-only),
+                           sets actor hidden state, collision, and tick. A Niagara effect can fire once
+                           on transition or run persistently while the actor is hidden.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Post process -->
+    <div style="margin-top:4.5rem;" class="reveal">
+        <h3 style="font-family:'Cinzel',serif;font-size:1.15rem;text-align:center;margin-bottom:.5rem;color:var(--gold);">Post-Process per Spirit</h3>
+        <p class="section-intro">
+            On top of visibility, each mask needed to shift the whole screen's colour grade.
+            I used a single unbound PostProcessVolume and drove its <code>WeightedBlendables</code>
+            array directly from C++ — no separate Blueprint logic required. I implemented two modes
+            so the team could choose the feel that worked best for the game.
+        </p>
+        <div class="grid-3">
+            <div class="scard blood">
+                <div class="scard-title r">Instant swap</div>
+                <p>The <code>WeightedBlendables</code> array is cleared and rebuilt with the chosen
+                   material in a single frame. No latency — best for fast puzzle solving.</p>
+            </div>
+            <div class="scard jade">
+                <div class="scard-title j">Smooth blend</div>
+                <p>With <code class="j">bUseSmoothBlending</code>, a 60 Hz timer drives
+                   <code>PostProcessBlendAlpha</code> from 0 → 1 over a configurable duration,
+                   cross-fading both materials simultaneously.</p>
+            </div>
+            <div class="scard sky">
+                <div class="scard-title b">Designer-friendly</div>
+                <p>All four material slots are <code class="b">EditDefaultsOnly</code>. Artists swap
+                   materials in the BP derived class — blend weight and duration are exposed too.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory -->
+    <div style="margin-top:2rem;" class="reveal">
+        <div class="scard neutral">
+            <div class="scard-title g">Mask Inventory</div>
+            <p>To keep progression gating simple for the jam, I used a <code>TMap&lt;EMaskType, bool&gt;</code>
+               pre-reserved for the three spirits. The input handler checks this map before calling
+               <code>ToggleMask()</code> — equipping a spirit you haven't found yet silently does nothing,
+               so level designers can place mask pickups anywhere without touching the controller logic.
+               Both <code>AddMaskToInventory()</code> and <code>DeleteMask()</code> are
+               Blueprint-callable so the team could wire them to pickups without writing C++.</p>
+        </div>
+    </div>
+</section>
+
+<div class="glyph-divider" aria-hidden="true">✦ ✦ ✦</div>
+
+<!-- ═══ CAMERA ═══ -->
+<section class="section reveal" id="camera">
+    <span class="eyebrow">Camera</span>
+    <h2 class="section-title">Custom <span class="acc-sky">Camera Manager</span></h2>
+    <div class="title-glyphs">✦ Volume-based Navigation ✦</div>
+    <p class="section-intro">
+        Rather than relying on Blueprint camera logic, I subclassed <code class="b">APlayerCameraManager</code>
+        directly to own the full top-down pipeline in C++. This gave me precise control over the update order —
+        base transform, offset, clamp, interpolation, modifiers — and made it trivial to add volume-based
+        zone transitions without any Blueprint event graphs.
+    </p>
+
+    <div class="grid-2 reveal">
+        <div>
+            <h3 style="font-family:'Cinzel',serif;font-size:1.15rem;margin-bottom:1.5rem;color:var(--sky);">Zone Volumes</h3>
+            <div class="timeline">
+                <div class="tl-item">
+                    <div class="tl-dot b"></div>
+                    <h4>Volume discovery</h4>
+                    <p>On the first <code>UpdateViewTarget()</code>, <code class="b">FindCameraVolumes()</code>
+                       gathers all <code>ACameraVolume</code> actors and sorts them by priority descending —
+                       higher-priority rooms win when temple areas overlap.</p>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-dot j"></div>
+                    <h4>Active zone detection</h4>
+                    <p>Every frame, <code class="j">GetActiveVolume()</code> walks the sorted array and
+                       picks the first volume whose bounding box contains the player, falling back to
+                       index 0 if the player is between rooms.</p>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-dot r"></div>
+                    <h4>Room change</h4>
+                    <p><code class="r">HandleVolumeChange()</code> calls <code>ShowActors()</code> on
+                       the previous volume (restoring original visibility states) and
+                       <code>HideActors()</code> on the new one — hiding obstructing temple geometry
+                       automatically per zone.</p>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-dot w"></div>
+                    <h4>Smooth transition</h4>
+                    <p>A <code>bIsTransitioning</code> flag activates <code>VInterpTo</code> at
+                       <code>CameraTransitionSpeed</code>. Once within 1 unit of target, the flag
+                       clears and the camera switches to a faster follow rate.</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 style="font-family:'Cinzel',serif;font-size:1.15rem;margin-bottom:1.5rem;color:var(--jade);">Position Pipeline</h3>
+            <div class="steps">
+                <div class="step b">
+                    <div class="step-num b">1</div>
+                    <div class="step-body">
+                        <h4>Base transform from Unreal</h4>
+                        <p><code class="b">Super::UpdateViewTargetInternal()</code> computes the raw camera transform without any modifiers applied.</p>
+                    </div>
+                </div>
+                <div class="step j">
+                    <div class="step-num j">2</div>
+                    <div class="step-body">
+                        <h4>Apply camera offset</h4>
+                        <p><code class="j">ApplyCameraOffset()</code> pushes the camera back along either the player's forward or a fixed world direction, by <code>CameraBackwardOffset</code>, and up by <code>CameraHeightOffset</code>.</p>
+                    </div>
+                </div>
+                <div class="step r">
+                    <div class="step-num r">3</div>
+                    <div class="step-body">
+                        <h4>Clamp to temple room</h4>
+                        <p>Target X and Y are clamped to the active volume's camera bounds (volume bounds expanded by <code>CameraMargin</code>) with a small slack to avoid hard snapping at room edges.</p>
+                    </div>
+                </div>
+                <div class="step w">
+                    <div class="step-num w">4</div>
+                    <div class="step-body">
+                        <h4>Interp + modifiers</h4>
+                        <p>Position interps via <code>VInterpTo</code>, rotation optionally via <code>RInterpTo</code>, then shakes and other modifiers apply through the standard <code>ApplyCameraModifiers()</code> call.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:1.3rem;" class="scard sky">
+                <div class="scard-title b">Camera Shake Subsystem</div>
+                <p>I built a <code class="b">UCameraShakeSubsystem</code> to centralise all shake calls
+                   across the codebase. Any system — traps, projectiles, events — calls one function with
+                   an optional distance falloff radius and the subsystem handles cooldown tracking, intensity
+                   scaling, and gamepad rumble via dynamic force feedback. No caller needs to know about
+                   PlayerCameraManager directly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="glyph-divider" aria-hidden="true">✦ ✦ ✦</div>
+
+<!-- ═══ PLAYER ═══ -->
+<section class="section reveal" id="player">
+    <span class="eyebrow">Player</span>
+    <h2 class="section-title">Movement & <span class="acc-jade">Death Flow</span></h2>
+    <div class="title-glyphs">✦ Control & Feedback ✦</div>
+    <p class="section-intro">
+        I implemented the player controller handling both top-down movement modes and the complete
+        death sequence. One design goal was keeping the level-reload logic out of C++ so the rest of the
+        team could change it freely in Blueprint without recompiling.
+    </p>
+
+    <div class="grid-2 reveal">
+        <div>
+            <h3 style="font-family:'Cinzel',serif;font-size:1.15rem;margin-bottom:1.2rem;color:var(--jade);">Movement</h3>
+            <div class="steps">
+                
+                <div class="step j">
+                    <div class="step-num j"></div>
+                    <div class="step-body">
+                        <h4>Directional input</h4>
+                        <p>Rather than using world-space axes, I project the 2D input vector onto the
+                           camera's yaw rotation so WASD always moves relative to what the player sees —
+                           important because the camera can rotate between temple rooms.</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:1.3rem;" class="scard jade">
+                <div class="scard-title j">Enhanced Input</div>
+                <p>I set up all bindings through Unreal's Enhanced Input system from the start, even
+                   for a jam. Having mask keys, pause, and movement as separate
+                   <code class="j">UInputAction</code> assets let the team rebind anything from the
+                   editor without touching C++, and made it trivial to add a pause action late in
+                   the jam as a <code>BlueprintImplementableEvent</code>.</p>
+            </div>
+        </div>
+        <div>
+            <h3 style="font-family:'Cinzel',serif;font-size:1.15rem;margin-bottom:1.2rem;color:var(--blood);">Death & Reload</h3>
+            <div class="steps">
+                <div class="step r">
+                    <div class="step-num r">1</div>
+                    <div class="step-body">
+                        <h4>Die()</h4>
+                        <p>The first thing <code>Die()</code> does is push a dedicated
+                           <code class="r">UInputComponent</code> with priority 100,000 — high enough
+                           to block every other binding instantly. Movement stops, the camera fades to
+                           black, and the death widget is added to viewport at ZOrder 9999.</p>
+                    </div>
+                </div>
+                <div class="step r">
+                    <div class="step-num r">2</div>
+                    <div class="step-body">
+                        <h4>HandleDeathReload()</h4>
+                        <p>After a configurable delay I call
+                           <code class="r">URGBMaskGameInstance::LoadGame()</code>, declared as a
+                           <code>BlueprintImplementableEvent</code> with no C++ body. That one decision
+                           meant the team could change which level to reload, add save-game logic, or
+                           go to a menu screen — all from Blueprint, no recompile needed.</p>
+                    </div>
+                </div>
+                <div class="step r">
+                    <div class="step-num r">3</div>
+                    <div class="step-body">
+                        <h4>Same-level fallback</h4>
+                        <p>If the reload stays on the same map (common during jam testing), the code
+                           also pops the input blocker, fades back in, removes the widget, and restores
+                           the movement mode — so the pawn is always left in a valid playable state.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="glyph-divider" aria-hidden="true">✦ ✦ ✦</div>
+
+<!-- ═══ AUDIO ═══ -->
+<section class="section reveal" id="audio">
+    <span class="eyebrow">Sound</span>
+    <h2 class="section-title">Audio <span class="acc-gold">Integration</span></h2>
+    <div class="title-glyphs">✦ Mechanical Feedback ✦</div>
+    <p class="section-intro">
+        Audio integration was kept intentionally lightweight for the jam, but I made sure the
+        C++ systems exposed the right hooks so sound designers could wire everything from Blueprint
+        without needing to modify any of the core classes.
+    </p>
+
+    <div class="grid-3 reveal">
+        <div class="scard jade">
+            <div class="scard-title j">Camera Shake + Rumble</div>
+            <p>The <code class="j">UCameraShakeSubsystem</code> I built pairs every shake call with
+               optional gamepad force feedback. Both are driven by the same distance falloff parameters,
+               so impact events feel consistent across screen and controller simultaneously.</p>
+        </div>
+        <div class="scard jade">
+            <div class="scard-title j">Mask Switch Hooks</div>
+            <p>I exposed <code>OnMaskChanged</code> and <code>OnMaskChangeStarted</code> as Blueprint-assignable
+               multicast delegates. The team used them to trigger mask-switch stingers and UI sound
+               effects without writing or modifying any C++.</p>
+        </div>
+        <div class="scard jade">
+            <div class="scard-title j">Death Event</div>
+            <p><code class="j">OnPlayerDead</code> is also a Blueprint-assignable delegate on the character.
+               Wiring a death sound cue to it required no C++ knowledge from teammates — just an event
+               binding in the BP derived class.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>✦ Ahuacatl and the Chromatic Temple · GGJ 2026 · Lucas Calatayud ✦</p>
+</footer>
+
+<script>
+    /* Floating glyph chars */
+    (function(){
+        const c = document.getElementById('glyphs');
+        const chars = ['✦','✧','◆','◇','▲','△','●','○','✴','✵','✶','⬟','⬡','⬢'];
+        const cols  = ['rgba(200,140,48,', 'rgba(217,79,42,', 'rgba(62,207,142,', 'rgba(74,159,212,'];
+        for(let i=0;i<40;i++){
+            const el = document.createElement('div');
+            el.className = 'glyph';
+            const col = cols[i%4];
+            const op  = (.04 + Math.random()*.07).toFixed(3);
+            el.textContent = chars[Math.floor(Math.random()*chars.length)];
+            el.style.cssText=`
+                left:${Math.random()*100}%;
+                --sz:${.8+Math.random()*.9}rem;
+                --gc:${col}${op});
+                --dur:${14+Math.random()*12}s;
+                --delay:${-Math.random()*18}s;
+                --rot:${(Math.random()-.5)*40}deg;
+            `;
+            c.appendChild(el);
+        }
+    })();
+
+    /* Nav scroll */
+    window.addEventListener('scroll',()=>{
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY>80);
+    });
+
+    /* Smooth scroll */
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click',e=>{
+            e.preventDefault();
+            const t=document.querySelector(a.getAttribute('href'));
+            if(t) window.scrollTo({top:t.offsetTop-70,behavior:'smooth'});
+        });
+    });
+
+    /* Scroll reveal */
+    const obs=new IntersectionObserver(e=>{
+        e.forEach(en=>{ if(en.isIntersecting) en.target.classList.add('in'); });
+    },{threshold:.07,rootMargin:'0px 0px -35px 0px'});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    /* Mask carousel */
+    (function(){
+        const slides = document.querySelectorAll('.mc-slide');
+        const dots   = document.querySelectorAll('.mc-dot');
+        let current  = 0;
+
+        function getVideo(slide) { return slide.querySelector('video'); }
+
+        function goTo(n) {
+            const prev = slides[current];
+            const prevVid = getVideo(prev);
+            if (prevVid) { prevVid.pause(); prevVid.currentTime = 0; }
+            prev.classList.remove('active');
+            dots[current].classList.remove('active');
+            dots[current].style.opacity = '.5';
+
+            current = (n + slides.length) % slides.length;
+
+            const next = slides[current];
+            next.classList.add('active');
+            dots[current].classList.add('active');
+            dots[current].style.opacity = '1';
+            const nextVid = getVideo(next);
+            if (nextVid) { nextVid.currentTime = 0; nextVid.play(); }
+        }
+
+        document.getElementById('mcPrev').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('mcNext').addEventListener('click', () => goTo(current + 1));
+        dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft')  goTo(current - 1);
+            if (e.key === 'ArrowRight') goTo(current + 1);
+        });
+    })();
+</script>
+</body>
+</html>
